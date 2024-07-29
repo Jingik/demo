@@ -25,20 +25,20 @@ public class IntroductionApiController {
 
     @PostMapping("/api/introduction")
     public CreateIntroductionResponse saveIntroduction(@Valid @RequestBody CreateIntroductionRequest request) {
-        Introduction introduction = new Introduction(request.getUserId(), request.getTitle());
+        Introduction introduction = new Introduction(request.getTitle());
         List<CreateSectionRequest> sections = request.getSections();
 
         List<Section> collect = sections.stream()
                 .map(section -> new Section(section.getSubTitle(), section.getContent()))
                 .collect(Collectors.toList());
-        Introduction result = introductionService.saveIntroduction(introduction, collect);
+        Long id = introductionService.saveIntroduction(request.getUserId(), introduction, collect);
 
-        return new CreateIntroductionResponse(result.getId());
+        return new CreateIntroductionResponse(id);
     }
 
     @PutMapping("/api/introduction/{id}")
-    public Long updateIntroduction(@PathVariable("id") Long id, @Valid @RequestBody IntroductionDto updateParam) {
-        return introductionService.updateIntroduction(id, updateParam);
+    public void updateIntroduction(@PathVariable("id") Long id, @Valid @RequestBody IntroductionDto updateParam) {
+        introductionService.updateIntroduction(id, updateParam);
     }
 
     @GetMapping("/api/introduction/{id}")
@@ -47,11 +47,10 @@ public class IntroductionApiController {
     }
 
     @GetMapping("/api/introductions/{userId}")
-    public MyIntroductionList findMyIntroductions(@PathVariable("userId") Long userId) {
-        List<IntroductionListDto> myIntroductions = introductionService.findMyIntroductions(userId);
+    public MyIntroductionList findMyIntroductions(@PathVariable("userId") Long id) {
+        List<IntroductionListDto> myIntroductions = introductionService.findMyIntroductions(id);
         return new MyIntroductionList(myIntroductions);
     }
-
 
     @DeleteMapping("/api/introduction/{id}")
     public void deleteIntroduction(@PathVariable("id") Long id) {

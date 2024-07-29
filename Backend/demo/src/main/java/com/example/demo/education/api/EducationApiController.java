@@ -22,15 +22,15 @@ public class EducationApiController {
 
     @PostMapping("/api/education")
     public CreateEducationResponse createEducation(@Valid @RequestBody CreateEducationRequest request) {
-        Education education = new Education(request.getUserId(), request.getUniversityName(), request.getDegree(),
+        Education education = new Education(request.getUniversityName(), request.getDegree(),
                                             request.getMajor(), request.getStartDate(), request.getGraduateDate());
-        Education result = educationService.saveEducation(education);
-        return new CreateEducationResponse(result.getId());
+        Long id = educationService.saveEducation(request.getUserId(), education);
+        return new CreateEducationResponse(id);
     }
 
     @PutMapping("/api/education/{id}")
-    public Long updateEducation(@PathVariable("id") Long id, @Valid @RequestBody EducationDto updateParam) {
-        return educationService.updateEducation(id, updateParam);
+    public void updateEducation(@PathVariable("id") Long id, @Valid @RequestBody EducationDto updateParam) {
+        educationService.updateEducation(id, updateParam);
     }
 
     @GetMapping("/api/education/{id}")

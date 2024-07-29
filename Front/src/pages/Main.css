@@ -1,0 +1,27 @@
+/* Main.css */
+
+.main-container {
+  margin-left: 260px; /* 사이드바 너비(240px) + 패딩(20px) */
+  padding: 20px;
+  text-align: center;
+}
+
+.main-container h1 {
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-container button {
+  width: 45%;
+  margin: 0 2.5%;
+}
+
+.main-container .sidebar {
+  text-align: left;
+}

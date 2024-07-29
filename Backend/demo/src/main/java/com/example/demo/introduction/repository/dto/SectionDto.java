@@ -9,7 +9,6 @@ import lombok.Setter;
 public class SectionDto {
 
     private Long id;
-    private Long introductionId;
     private String subTitle;
     private String content;
 

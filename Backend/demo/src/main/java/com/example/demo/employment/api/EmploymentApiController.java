@@ -18,29 +18,29 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class EmploymentApiController {
 
-    private final EmploymentService EmploymentService;
+    private final EmploymentService employmentService;
 
     @PostMapping("/api/employment")
     public CreateEmploymentResponse createEmployment(@Valid @RequestBody CreateEmploymentRequest request) {
-        Employment Employment = new Employment(request.getUserId(), request.getCompanyName(), request.getPosition(),
+        Employment employment = new Employment(request.getCompanyName(), request.getPosition(),
                                             request.getDepartment(), request.getStartDate(), request.getEndDate(), request.getAchievement());
-        Employment result = EmploymentService.saveEmployment(Employment);
-        return new CreateEmploymentResponse(result.getId());
+        Long id = employmentService.saveEmployment(request.getUserId(), employment);
+        return new CreateEmploymentResponse(id);
     }
 
     @PutMapping("/api/employment/{id}")
-    public Long updateEmployment(@PathVariable("id") Long id, @Valid @RequestBody EmploymentDto updateParam) {
-        return EmploymentService.updateEmployment(id, updateParam);
+    public void updateEmployment(@PathVariable("id") Long id, @Valid @RequestBody EmploymentDto updateParam) {
+        employmentService.updateEmployment(id, updateParam);
     }
 
     @GetMapping("/api/employment/{id}")
     public EmploymentDto findById(@PathVariable("id") Long id) {
-        return EmploymentService.findById(id);
+        return employmentService.findById(id);
     }
 
     @DeleteMapping("/api/employment/{id}")
     public void deleteEmployment(@PathVariable("id") Long id) {
-        EmploymentService.deleteEmployment(id);
+        employmentService.deleteEmployment(id);
     }
 
     @Getter
